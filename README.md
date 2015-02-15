@@ -1,5 +1,5 @@
 # interactive-resume
-## P2: Interactive Resume [Demo](http://jodiealaine.github.io/frontend-nanodegree-resume/)
+## P2: Interactive Resume [Demo](http://jodiealaine.github.io/interactive-resume/)
 
 ## Project Overview
 This is the second project on Udacity's Front-End Web Developer Nanodegree program.
@@ -11,7 +11,7 @@ The resume has four distinct sections: work, education, projects and a header wi
 
 ## Delivery
 
-Interactive Resume [Demo](http://jodiealaine.github.io/frontend-nanodegree-resume/)
+Interactive Resume [Demo](http://jodiealaine.github.io/interactive-resume/)
 
 
 
