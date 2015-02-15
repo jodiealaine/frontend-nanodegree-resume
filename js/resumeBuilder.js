@@ -132,7 +132,7 @@ bio.display = function() {
   var formattedGithub = HTMLgithub.replace("%data%",bio.contacts.github);
   var formattedLocation = HTMLlocation.replace("%data%",bio.contacts.location);
 	var formattedBioPic = HTMLbioPic.replace("%data%", bio.biopic);
-	var formattedWelcomeMessage = HTMLWelcomeMsg.replace("%data%", bio.welcomeMessage);
+	// var formattedWelcomeMessage = HTMLWelcomeMsg.replace("%data%", bio.welcomeMessage);
 	
 	$("#header").prepend(formattedRole);
 	$("#header").prepend(formattedName);
@@ -146,7 +146,7 @@ bio.display = function() {
         .append(formattedGithub)
         .append(formattedLocation);
 	$("#header").append(formattedBioPic);
-	$("#header").append(formattedWelcomeMessage);
+	// $("#header").append(formattedWelcomeMessage);
 	
 	if (bio.skills.length > 0) {
 		$("#header").append(HTMLskillsStart);
@@ -162,15 +162,11 @@ work.display = function() {
 	for (job in work.jobs) {
 		var formattedEmployer = HTMLworkEmployer.replace("%data%",work.jobs[job].employer);
 		var formattedTitle = HTMLworkTitle.replace("%data%",work.jobs[job].title);
-		var formattedEmployerTitle = formattedEmployer + formattedTitle;
-		
-		var formattedDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
-		
+		var formattedEmployerTitle = formattedEmployer + formattedTitle;	
+		var formattedDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);	
 		var formattedLocation = HTMLworkLocation.replace("%data%", work.jobs[job].location);
-		
 		var formattedDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
 		
-
 		$(".work-entry:last").append(formattedEmployerTitle)
 			.append(formattedDates)
 			.append(formattedLocation)
@@ -204,15 +200,13 @@ education.display = function() {
 		var formattedSchoolName = HTMLschoolName.replace("%data%", education.schools[school].name);
 		formattedSchoolName = formattedSchoolName.replace("#", education.schools[school].url);
 		var formattedSchoolDegree = HTMLschoolDegree.replace("%data%", education.schools[school].degree);
-		
-		
 		var formattedSchoolDates = HTMLschoolDates.replace("%data%", education.schools[school].dates);
-		
 		var formattedSchoolLocation = HTMLschoolLocation.replace("%data%", education.schools[school].location);
-		$(".education-entry").append(formattedSchoolLocation);
 		
+		$(".education-entry").append(formattedSchoolLocation);
 		$(".education-entry").append(formattedSchoolName + formattedSchoolDegree);
 		$(".education-entry").append(formattedSchoolDates);
+		
 		if (education.schools[school].majors.length > 0){
 			for (major in education.schools[school].majors){
 				var formattedSchoolMajor = HTMLschoolMajor.replace("%data%", education.schools[school].majors[major]);
@@ -225,28 +219,18 @@ education.display = function() {
 	for (onlineCourse in education.onlineCourses){
 		var formattedonlineTitle = HTMLonlineTitle.replace("%data%", education.onlineCourses[onlineCourse].title);
 		var formattedonlineSchool = HTMLonlineSchool.replace("%data%", education.onlineCourses[onlineCourse].school);
-		$(".education-entry:last").append(formattedonlineTitle + formattedonlineSchool);
-		var formattedonlineDates = HTMLonlineDates.replace("%data%",education.onlineCourses[onlineCourse].date);
-		$(".education-entry:last").append(formattedonlineDates);
+		var formattedonlineDates = HTMLonlineDates.replace("%data%",education.onlineCourses[onlineCourse].date);	
 		var formattedonlineURL = HTMLonlineURL.replace("%data%",education.onlineCourses[onlineCourse].url);
+		
+		$(".education-entry:last").append(formattedonlineTitle + formattedonlineSchool);
+		$(".education-entry:last").append(formattedonlineDates);
 		$(".education-entry:last").append(formattedonlineURL);
 	}
 }
-
-function inName(name){
-	console.log(name);
-	var newName = name;
-	newName = newName[0].toUpperCase() + newName.slice(1,newName.indexOf(" ") + 1).toLowerCase() + newName.slice(newName.indexOf(" ") + 1).toUpperCase(); 
-
-	return newName;
-};
 
 projects.display();
 work.display();
 bio.display();
 education.display();
 
-$('#main').append(internationalizeButton);
 $("#mapDiv").append(googleMap);
-
-

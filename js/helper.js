@@ -1,5 +1,5 @@
 var HTMLheaderName = "<h1 id='name'>%data%</h1>";
-var HTMLheaderRole = "<span>%data%</span><hr/>";
+var HTMLheaderRole = "<h3>%data%</h3><hr/>";
 
 var HTMLcontactGeneric = "<li class='flex-item'><span class='grey-text'>%contact%</span><span class='white-text'>%data%</span></li>";
 var HTMLmobile = "<li class='flex-item'><span class='grey-text'>mobile</span><span class='white-text'>%data%</span></li>";
@@ -46,7 +46,7 @@ var googleMap = "<div id='map'></div>";
 
 
 /*
-The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
+The International Name challenge. Don't delete! It hooks up your code to the button to append.
 */
 $(document).ready(function() {
   $('button').click(function() {
@@ -54,8 +54,6 @@ $(document).ready(function() {
     $('#name').html(iName);  
   });
 })
-
-
 
 /*
 The next few lines about clicks are for the Collecting Click Locations
@@ -76,8 +74,6 @@ $(document).click(function(loc) {
   // your code goes here!
 });
 
-
-
 /*
 This is the fun part. Here's where we generate the custom Google Map for the website.
 See the documentation below for more details.
@@ -85,13 +81,12 @@ https://developers.google.com/maps/documentation/javascript/reference
 */
 var map;    // declares a global map variable
 
-
 /*
 Start here! initializeMap() is called when page is loaded.
 */
 function initializeMap() {
 
-  var locations;        
+  var locations = [];        
 
   var mapOptions = {
     disableDefaultUI: true
@@ -109,24 +104,24 @@ function initializeMap() {
   function locationFinder() {
     
     // initializes an empty array
-    var locations = [];
+    var locs = [];
 
     // adds the single location property from bio to the locations array
-    locations.push(bio.contacts.location);
+    locs.push(bio.contacts.location);
     
     // iterates through school locations and appends each location to
     // the locations array
     for (var school in education.schools) {
-      locations.push(education.schools[school].location);
+      locs.push(education.schools[school].location);
     }
 
     // iterates through work locations and appends each location to
     // the locations array
     for (var job in work.jobs) {
-      locations.push(work.jobs[job].location);
+      locs.push(work.jobs[job].location);
     }
 
-    return locations;
+    return locs;
   }
 
   /*
@@ -138,7 +133,7 @@ function initializeMap() {
 
     // The next lines save location data from the search result object to local variables
     var lat = placeData.geometry.location.k;  // latitude from the place service
-    var lon = placeData.geometry.location.B;  // longitude from the place service
+    var lon = placeData.geometry.location.D;  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
 
@@ -158,7 +153,7 @@ function initializeMap() {
 
     // hmmmm, I wonder what this is about...
     google.maps.event.addListener(marker, 'click', function() {
-      // your code goes here!
+      infoWindow.open(map,marker);
     });
 
     // this is where the pin actually gets added to the map.
@@ -215,10 +210,6 @@ function initializeMap() {
   pinPoster(locations);
   
 };
-
-/*
-Uncomment all the code below when you're ready to implement a Google Map!
-*/
 
 // Calls the initializeMap() function when the page loads
 window.addEventListener('load', initializeMap);
