@@ -86,8 +86,7 @@ Start here! initializeMap() is called when page is loaded.
 */
 function initializeMap() {
 
-  var locations = [];        
-
+  var locations;        
   var mapOptions = {
     disableDefaultUI: true
   };
@@ -96,7 +95,6 @@ function initializeMap() {
   // <div id="map">, which is appended as part of an exercise late in the course.
   map = new google.maps.Map(document.querySelector('#map'), mapOptions);
 
-
   /*
   locationFinder() returns an array of every location string from the JSONs
   written for bio, education, and work.
@@ -104,24 +102,22 @@ function initializeMap() {
   function locationFinder() {
     
     // initializes an empty array
-    var locs = [];
-
+    var locations = [];
     // adds the single location property from bio to the locations array
-    locs.push(bio.contacts.location);
+    locations.push(bio.contacts.location);
     
     // iterates through school locations and appends each location to
     // the locations array
     for (var school in education.schools) {
-      locs.push(education.schools[school].location);
+      locations.push(education.schools[school].location);
     }
 
     // iterates through work locations and appends each location to
     // the locations array
     for (var job in work.jobs) {
-      locs.push(work.jobs[job].location);
+      locations.push(work.jobs[job].location);
     }
-
-    return locs;
+    return locations;
   }
 
   /*
@@ -132,8 +128,8 @@ function initializeMap() {
   function createMapMarker(placeData) {
 
     // The next lines save location data from the search result object to local variables
-    var lat = placeData.geometry.location.k;  // latitude from the place service
-    var lon = placeData.geometry.location.D;  // longitude from the place service
+    var lat = placeData.geometry.location.lat();  // latitude from the place service
+    var lon = placeData.geometry.location.lng();  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
 
@@ -184,7 +180,7 @@ function initializeMap() {
     // creates a Google place search service object. PlacesService does the work of
     // actually searching for location data.
     var service = new google.maps.places.PlacesService(map);
-    
+
     // Iterates through the array of locations, creates a search object for each location
     for (place in locations) {
 
