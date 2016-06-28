@@ -33,7 +33,7 @@ var HTMLschoolName = "<a href='#'>%data%";
 var HTMLschoolDegree = " -- %data%</a>";
 var HTMLschoolDates = "<div class='date-text'>%data%</div>";
 var HTMLschoolLocation = "<div class='location-text'>%data%</div>";
-var HTMLschoolMajor = "<em><br>Major: %data%</em>"
+var HTMLschoolMajor = "<em><br>Major: %data%</em>";
 
 var HTMLonlineClasses = "<h3>Online Classes</h3>";
 var HTMLonlineTitle = "<a href='#'>%data%";
@@ -50,23 +50,21 @@ The International Name challenge. Don't delete! It hooks up your code to the but
 */
 $(document).ready(function() {
   $('button').click(function() {
-    var iName = inName() || function(){};
-    $('#name').html(iName);  
+    var iName = inName() || function() {};
+    $('#name').html(iName);
   });
-})
+});
 
 /*
 The next few lines about clicks are for the Collecting Click Locations
 */
 clickLocations = [];
 
-function logClicks(x,y) {
-  clickLocations.push(
-    {
-      "x": x,
-      "y": y
-    }
-  );
+function logClicks(x, y) {
+  clickLocations.push({
+    "x": x,
+    "y": y
+  });
   console.log("x location: " + x + "; y location: " + y);
 }
 
@@ -79,14 +77,14 @@ This is the fun part. Here's where we generate the custom Google Map for the web
 See the documentation below for more details.
 https://developers.google.com/maps/documentation/javascript/reference
 */
-var map;    // declares a global map variable
+var map; // declares a global map variable
 
 /*
 Start here! initializeMap() is called when page is loaded.
 */
 function initializeMap() {
 
-  var locations;        
+  var locations;
   var mapOptions = {
     disableDefaultUI: true
   };
@@ -100,22 +98,26 @@ function initializeMap() {
   written for bio, education, and work.
   */
   function locationFinder() {
-    
+
     // initializes an empty array
     var locations = [];
     // adds the single location property from bio to the locations array
     locations.push(bio.contacts.location);
-    
+
     // iterates through school locations and appends each location to
     // the locations array
     for (var school in education.schools) {
-      locations.push(education.schools[school].location);
+      if (education.schools.hasOwnProperty(school)) {
+        locations.push(education.schools[school].location);
+      }
     }
 
     // iterates through work locations and appends each location to
     // the locations array
     for (var job in work.jobs) {
-      locations.push(work.jobs[job].location);
+      if (work.jobs.hasOwnProperty(job)) {
+        locations.push(work.jobs[job].location);
+      }
     }
     return locations;
   }
@@ -128,10 +130,10 @@ function initializeMap() {
   function createMapMarker(placeData) {
 
     // The next lines save location data from the search result object to local variables
-    var lat = placeData.geometry.location.lat();  // latitude from the place service
-    var lon = placeData.geometry.location.lng();  // longitude from the place service
-    var name = placeData.formatted_address;   // name of the place from the place service
-    var bounds = window.mapBounds;            // current boundaries of the map window
+    var lat = placeData.geometry.location.lat(); // latitude from the place service
+    var lon = placeData.geometry.location.lng(); // longitude from the place service
+    var name = placeData.formatted_address; // name of the place from the place service
+    var bounds = window.mapBounds; // current boundaries of the map window
 
     // marker is an object with additional data about the pin for a single location
     var marker = new google.maps.Marker({
@@ -139,7 +141,7 @@ function initializeMap() {
       position: placeData.geometry.location,
       title: name
     });
-    
+
     // infoWindows are the little helper windows that open when you click
     // or hover over a pin on a map. They usually contain more information
     // about a location.
@@ -149,7 +151,7 @@ function initializeMap() {
 
     // hmmmm, I wonder what this is about...
     google.maps.event.addListener(marker, 'click', function() {
-      infoWindow.open(map,marker);
+      infoWindow.open(map, marker);
     });
 
     // this is where the pin actually gets added to the map.
@@ -167,7 +169,7 @@ function initializeMap() {
   */
   function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      createMapMarker(results[0])
+      createMapMarker(results[0]);
     }
   }
 
@@ -182,16 +184,17 @@ function initializeMap() {
     var service = new google.maps.places.PlacesService(map);
 
     // Iterates through the array of locations, creates a search object for each location
-    for (place in locations) {
+    for (var place in locations) {
+      if (locations.hasOwnProperty(place)) {
+        // the search request object
+        var request = {
+          query: locations[place]
+        };
 
-      // the search request object
-      var request = {
-        query: locations[place]
+        // Actually searches the Google Maps API for location data and runs the callback 
+        // function with the search results after each search.
+        service.textSearch(request, callback);
       }
-
-      // Actually searches the Google Maps API for location data and runs the callback 
-      // function with the search results after each search.
-      service.textSearch(request, callback);
     }
   }
 
@@ -204,8 +207,8 @@ function initializeMap() {
   // pinPoster(locations) creates pins on the map for each location in
   // the locations array
   pinPoster(locations);
-  
-};
+
+}
 
 // Calls the initializeMap() function when the page loads
 window.addEventListener('load', initializeMap);
